@@ -15,23 +15,25 @@ document.getElementById('searchBtn').onclick = () => {
 };
 
 async function searchSongs(query) {
-    const targetUrl = `${API_BASE}/search/songs?query=${encodeURIComponent(query)}`;
-    const finalUrl = PROXY + encodeURIComponent(targetUrl);
-
+    // Force HTTPS to avoid 'Mixed Content' blocks on Vercel
+    const API_URL = `https://saavn.sumit.co/api/search/songs?query=${encodeURIComponent(query)}`;
+    
     try {
-        const response = await fetch(finalUrl);
-        const result = await response.json();
-        // Unwrap data from proxy
-        const data = JSON.parse(result.contents);
+        const response = await fetch(API_URL, {
+            method: 'GET',
+            mode: 'cors', // Explicitly ask for CORS
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) throw new Error('Network response was not ok');
         
-        if (data.success && data.data.results.length > 0) {
-            renderResults(data.data.results);
-        } else {
-            document.getElementById('resultsGrid').innerHTML = "<p>No songs found.</p>";
-        }
-    } catch (err) {
-        console.error(err);
-        document.getElementById('resultsGrid').innerHTML = "<p>Connection Error. Trying again...</p>";
+        const data = await response.json();
+        renderResults(data.data.results);
+    } catch (error) {
+        console.error("Fetch failed:", error);
+        // Show a user-friendly message instead of a blank screen
+        document.getElementById('resultsGrid').innerHTML = 
+            "<p style='color:red;'>Server busy. Please try again in 10 seconds.</p>";
     }
 }
 
@@ -97,3 +99,4 @@ function fmt(s) {
 function toggleOverlay() {
     document.getElementById('playerOverlay').classList.toggle('active');
 }
+
