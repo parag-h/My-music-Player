@@ -2,50 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nano Banana Music</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <title>Nano Banana | Premium Music</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="app">
         <div class="top-nav">
-            <input type="text" id="searchInput" placeholder="Search for a song (e.g. Qayde Se)">
+            <div class="logo">🍌</div>
+            <input type="text" id="searchInput" placeholder="Search Qayde Se, Arijit Singh...">
             <button id="searchBtn">Search</button>
         </div>
 
         <div class="content">
-            <h2 id="viewTitle" style="margin-bottom:20px;">Trending</h2>
-            <div id="resultsGrid" class="grid"></div>
+            <h2 id="viewTitle">Trending Hits</h2>
+            <div id="resultsGrid" class="grid">
+                <p style="color:gray;">Loading your music...</p>
+            </div>
         </div>
 
-        <div class="player-bar" onclick="toggleOverlay()">
+        <div class="player-bar" id="miniPlayer" onclick="toggleOverlay()">
             <div class="info">
                 <img id="currentArt" src="https://via.placeholder.com/50">
-                <div>
-                    <div id="currentTitle" style="font-weight:bold;">Not Playing</div>
-                    <div id="currentArtist" style="font-size:12px; color:gray;">Select a song</div>
+                <div class="text-info">
+                    <div id="currentTitle">Ready to Play</div>
+                    <div id="currentArtist">Select a track</div>
                 </div>
             </div>
-            <audio id="audioPlayer" controls onclick="event.stopPropagation()"></audio>
+            <div class="mini-controls">
+                <audio id="audioPlayer" controls onclick="event.stopPropagation()"></audio>
+            </div>
         </div>
     </div>
 
     <div id="playerOverlay">
         <button class="close-btn" onclick="toggleOverlay()">✕</button>
-        <img id="overlayArt" class="big-art">
+        <img id="overlayArt" class="big-art" src="">
         <div class="controls">
-            <h1 id="overlayTitle">Title</h1>
-            <p id="overlayArtist" style="color:gray; margin-bottom:20px;">Artist</p>
+            <h1 id="overlayTitle">Song Title</h1>
+            <p id="overlayArtist">Artist Name</p>
             
             <div class="progress-box">
                 <input type="range" id="progressBar" value="0" step="0.1" oninput="seek()">
-                <div style="display:flex; justify-content:space-between; font-size:12px; margin-top:5px;">
+                <div class="time-labels">
                     <span id="curTime">0:00</span>
                     <span id="durTime">0:00</span>
                 </div>
             </div>
 
-            <button id="downloadBtn" style="width:100%; padding:15px; font-size:18px;">Download 320kbps</button>
+            <button id="downloadBtn">Download 320kbps MP3</button>
         </div>
     </div>
 
